@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GIFT City Retail Fund Screener</title>
+<script src="lib/d3.min.js"></script>
+<style>
+:root {
+  --font-anthropic-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-fg: #1c2330; --color-fg-muted: #5c6675; --color-border-line: #d7dde6; --color-panel: #f6f8fb;
+  --color-ok: #14803c; --color-warn: #b45309; --color-bad: #c0392b;
+  --cds-font-size-body: 14px; --cds-font-size-caption: 12.5px; --cds-pad-lg: 20px; --cds-ease-out: ease-out;
+  --cds-text-secondary: #5c6675; --cds-surface-popover: #fff; --cds-border: #c9d1dc; --cds-shadow-popover: 0 4px 14px rgba(0,0,0,.12);
+  --cds-chart-axis: #8a94a3; --cds-chart-grid: #e3e8ef;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-fg: #e8ecf2; --color-fg-muted: #9aa5b5; --color-border-line: #2e3744; --color-panel: #161c26;
+    --color-ok: #4cc38a; --color-warn: #e0a64a; --color-bad: #ef7b6c;
+    --cds-text-secondary: #9aa5b5; --cds-surface-popover: #1d2531; --cds-border: #3a4556; --cds-shadow-popover: 0 4px 14px rgba(0,0,0,.5);
+    --cds-chart-axis: #6b7686; --cds-chart-grid: #2a3340;
+  }
+  body { background: #11161e; }
+}
+body { margin: 0; background: #fff; }
+@media (prefers-color-scheme: dark) { body { background: #11161e; } }
+.gt { --navy: #0b2a4a; --navy-2: #12385f; --accent: #2f7fc1; --hair: var(--color-border-line); display: flex; flex-direction: column; font-family: var(--font-anthropic-sans); color: var(--color-fg); font-size: var(--cds-font-size-body); }
+.gt .in { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
+.gt .hero { background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%); color: #fff; padding: 34px 0 30px; border-bottom: 3px solid var(--accent); }
+.gt .eyebrow { margin: 0 0 10px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #9fc3e6; font-weight: 500; }
+.gt h1 { font-family: var(--font-anthropic-sans); font-weight: 300; font-size: 32px; letter-spacing: -.01em; margin: 0; text-wrap: balance; color: #fff; }
+.gt h2 { font-family: var(--font-anthropic-sans); font-weight: 400; font-size: 20px; margin: 0; letter-spacing: -.005em; }
+.gt h4 { margin: 0 0 8px; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--color-fg-muted); }
+.gt .lede { margin: 12px 0 0; color: #cfe0f1; font-size: var(--cds-font-size-body); max-width: 64ch; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.gt .lede b { color: #fff; font-weight: 500; }
+.gt .dot { width: 8px; height: 8px; border-radius: 50%; background: #4cc38a; display: inline-block; flex: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .gt .dot { animation: gtpulse 2.4s var(--cds-ease-out, ease-out) infinite; }
+  @keyframes gtpulse { 0% { box-shadow: 0 0 0 0 rgba(76,195,138,.55); } 70% { box-shadow: 0 0 0 8px rgba(76,195,138,0); } 100% { box-shadow: 0 0 0 0 rgba(76,195,138,0); } }
+  .gt tbody tr { transition: background-color .15s ease; }
+  .gt .panel { animation: gtfade .3s var(--cds-ease-out, ease-out); }
+  @keyframes gtfade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .gt .bf { transition: width .4s var(--cds-ease-out, ease-out); }
+}
+.gt .main { display: flex; flex-direction: column; gap: 28px; padding-top: 24px; padding-bottom: 48px; }
+.gt .hint { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.gt .wrap { overflow-x: auto; border-top: 2px solid var(--navy); border-bottom: 1px solid var(--hair); }
+.gt table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); }
+.gt #nav-table { min-width: 760px; }
+.gt th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--color-fg-muted); padding: 12px 14px; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+.gt td { padding: 14px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+.gt tbody tr:hover td { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.gt tr:last-child td { border-bottom: 0; }
+.gt tr.sel td { background: color-mix(in srgb, var(--accent) 10%, transparent); box-shadow: inset 3px 0 0 var(--accent); }
+.gt tr.sel td:not(:first-child) { box-shadow: none; }
+.gt .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gt th.num { text-align: right; }
+.gt .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.gt .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.gt .btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+.gt .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.gt .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.gt .chip { all: unset; cursor: pointer; padding: 6px 12px; border: 1px solid var(--hair); border-radius: 2px; font-size: var(--cds-font-size-caption); color: var(--color-fg); }
+.gt .chip:hover { border-color: var(--accent); }
+.gt .chip[aria-pressed=true] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.gt .chip:disabled { opacity: .45; cursor: not-allowed; }
+.gt .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.gt .fname { all: unset; cursor: pointer; font-weight: 500; color: var(--color-fg); }
+.gt .fname:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.gt .fname:focus-visible, .gt button:focus-visible, .gt input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.gt .amc { display: block; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin-top: 2px; }
+.gt .cat { color: var(--color-fg-muted); white-space: nowrap; }
+.gt .pill { display: inline-flex; align-items: center; gap: 6px; font-size: var(--cds-font-size-caption); white-space: nowrap; color: var(--color-fg-muted); }
+.gt .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.gt .pill.ok { color: var(--color-ok); }
+.gt .pill.warn { color: var(--color-warn); }
+.gt .na { color: var(--color-fg-muted); }
+.gt .pos { color: var(--color-ok); }
+.gt .neg { color: var(--color-bad); }
+.gt .note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); max-width: 38ch; margin-top: 2px; }
+.gt .foot, .gt .cap { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); max-width: 72ch; margin: 0; line-height: 1.55; }
+.gt .panel { border-top: 2px solid var(--accent); background: var(--color-panel); padding: var(--cds-pad-lg) 0 0; display: flex; flex-direction: column; gap: 22px; scroll-margin-top: 12px; }
+.gt .panel:empty { display: none; }
+.gt .phead { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.gt .psub { color: var(--color-fg-muted); font-size: var(--cds-font-size-body); margin-top: 2px; }
+.gt .btn { all: unset; cursor: pointer; padding: 6px 14px; border: 1px solid var(--hair); border-radius: 2px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.gt .btn:hover { border-color: var(--accent); color: var(--accent); }
+.gt dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 28px; }
+.gt dl > div { min-width: 0; border-left: 2px solid var(--hair); padding-left: 12px; }
+.gt dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-fg-muted); margin-bottom: 3px; }
+.gt dd { margin: 0; overflow-wrap: anywhere; }
+.gt .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; }
+.gt .card { min-width: 0; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--hair); padding-top: 12px; }
+.gt .brow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: var(--cds-font-size-caption); }
+.gt .bl { overflow-wrap: anywhere; }
+.gt .bt { height: 6px; background: color-mix(in srgb, var(--color-fg) 7%, transparent); border-radius: 1px; overflow: hidden; }
+.gt .bf { display: block; height: 100%; }
+.gt .bv { font-variant-numeric: tabular-nums; text-align: right; min-width: 3.5em; }
+.gt .rets { max-width: 620px; }
+.gt .rchart { position: relative; max-width: 760px; margin-top: 18px; }
+.gt .rchart svg { display: block; max-width: 100%; }
+.gt .rhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.gt .rhead h4 { margin: 0; }
+.gt .rng { display: inline-flex; border: 1px solid var(--hair); }
+.gt .rng button { all: unset; cursor: pointer; padding: 4px 11px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.gt .rng button + button { border-left: 1px solid var(--hair); }
+.gt .rng button[aria-pressed=true] { background: var(--navy); color: #fff; }
+.gt .rng button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.gt .rleg { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--cds-font-size-caption); color: var(--cds-text-secondary); margin-bottom: 4px; }
+.gt .rleg span { display: inline-flex; align-items: center; gap: 6px; }
+.gt .rleg i { width: 10px; height: 10px; display: inline-block; border-radius: 1px; }
+.gt .rleg b { font-weight: 400; }
+.gt .rtip { line-height: 1.4; position: absolute; display: none; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); color: var(--cds-text-secondary); padding: 4px 8px; font-size: 12px; white-space: nowrap; z-index: 2; }
+.gt .rets table { border-top: 1px solid var(--hair); }
+.gt .cmp td, .gt .cmp th { white-space: normal; vertical-align: top; }
+.gt .cmp th.rowh { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--color-fg-muted); width: 150px; font-size: var(--cds-font-size-body); }
+.gt .cmp { min-width: 560px; }
+.gt .cmp td { min-width: 150px; }
+
+@media (max-width: 720px) {
+  .gt .in { padding: 0 16px; }
+  .gt .hero { padding: 24px 0 22px; }
+  .gt h1 { font-size: 24px; }
+  .gt h2 { font-size: 18px; }
+  .gt .main { gap: 22px; padding-top: 18px; padding-bottom: 36px; }
+  .gt .wrap { overflow: visible; border-top: 2px solid var(--navy); }
+  .gt #nav-table, .gt #nav-table tbody { display: block; min-width: 0; }
+  .gt #nav-table thead { display: none; }
+  .gt #nav-table tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; row-gap: 10px; padding: 16px 0; border-bottom: 1px solid var(--hair); position: relative; }
+  .gt #nav-table td { display: block; padding: 0; border: 0; text-align: left; white-space: normal; min-width: 0; background: none; box-shadow: none; }
+  .gt #nav-table tbody tr:hover td, .gt #nav-table tr.sel td { background: none; box-shadow: none; }
+  .gt #nav-table tr.sel { box-shadow: inset 3px 0 0 var(--accent); padding-left: 10px; margin-left: -10px; background: color-mix(in srgb, var(--accent) 7%, transparent); }
+  .gt #nav-table td.fund { grid-column: 1 / 3; grid-row: 1; font-size: 16px; }
+  .gt .fname { display: block; padding: 2px 0; line-height: 1.3; }
+  .gt #nav-table td.c-nav { grid-column: 1; grid-row: 2; font-size: 22px; font-weight: 300; letter-spacing: -.01em; }
+  .gt #nav-table td.c-st { grid-column: 2; grid-row: 2; align-self: end; }
+  .gt #nav-table td.c-ter { grid-column: 1; grid-row: 3; }
+  .gt #nav-table td.c-min { grid-column: 2; grid-row: 3; }
+  .gt #nav-table td.c-cat { grid-column: 1; grid-row: 4; }
+  .gt #nav-table td.c-date { grid-column: 2; grid-row: 4; }
+  .gt #nav-table td.c-nav::before, .gt #nav-table td.c-ter::before, .gt #nav-table td.c-min::before, .gt #nav-table td.c-cat::before, .gt #nav-table td.c-date::before { content: attr(data-l); display: block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-fg-muted); font-weight: 500; margin-bottom: 2px; font-variant-numeric: normal; }
+  .gt #nav-table td.c-ter, .gt #nav-table td.c-min, .gt #nav-table td.c-cat, .gt #nav-table td.c-date { font-size: var(--cds-font-size-body); }
+  .gt #nav-table .note { max-width: none; }
+  .gt .panel { gap: 18px; }
+  .gt dl { grid-template-columns: 1fr; gap: 14px; }
+  .gt .cards { grid-template-columns: 1fr; gap: 22px; }
+  .gt .rets { max-width: none; }
+  .gt .rets > div { margin: 0 -16px; padding: 0 16px; }
+  .gt .btn { padding: 10px 16px; }
+  .gt .cmp { min-width: 0; }
+  .gt .cmp td { min-width: 130px; }
+  .gt .cmp th.rowh { width: 110px; min-width: 110px; position: sticky; left: 0; background: var(--color-panel); z-index: 1; font-size: var(--cds-font-size-caption); }
+  .gt .foot { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="gt">
+  <header class="hero"><div class="in">
+    <p class="eyebrow">GIFT City &middot; Retail funds</p>
+    <h1 id="title">GIFT City Retail Fund Screener</h1>
+    <p class="lede"><span class="dot" aria-hidden="true"></span><span><b data-draw="live">—</b> of <b data-draw="total">—</b> funds have a published NAV, the newest dated <b data-draw="latest">—</b>.</span></p>
+  </div></header>
+  <div class="in main">
+  <div class="bar">
+    <p class="hint">Click a fund name to see its holdings, returns, costs and manager.</p>
+    <button type="button" class="btn primary" id="open-compare">Compare funds</button>
+  </div>
+  <div class="wrap">
+    <table id="nav-table">
+      <thead><tr>
+        <th>Fund</th>
+        <th>Type</th>
+        <th class="num">Direct NAV (USD)</th>
+        <th class="num">Expense ratio</th>
+        <th class="num">Minimum investment</th>
+        <th class="num">NAV date</th>
+        <th>Status</th>
+      </tr></thead>
+      <tbody data-draw="rows"></tbody>
+    </table>
+  </div>
+  <section id="compare" class="panel" data-draw="compare" aria-live="polite"></section>
+  <section id="detail" class="panel" data-draw="detail"></section>
+  <p class="foot">NAVs are the Direct plan subscription NAV in US dollars from each fund house's website. Fund details come from each fund house's factsheets, presentations and offer documents, so their dates differ from fund to fund. Where a source gives no figure the page says so. Benchmarks are net total return indexes: they include dividends reinvested, after the withholding tax a foreign investor would pay. This applies to the S&amp;P 500 and Nasdaq 100 benchmarks. Last NAV collection: <span data-draw="fetched">—</span>.</p>
+  </div>
+</div>
+<script>
+// Small stand-in for the data and drawing helpers the page code uses.
+const dash = (() => {
+  const store = {}, calcs = {}, draws = {}, listeners = [];
+  let ready = false;
+  const run = (name) => { const fn = draws[name]; if (!ready || !fn) return; document.querySelectorAll('[data-draw="' + name + '"]').forEach((el) => fn(el)); };
+  return {
+    colors: ['#2f7fc1', '#e0733a', '#4cc38a', '#9b6bd1'],
+    data: (id) => {
+      if (calcs[id]) { try { return { status: 'ok', data: calcs[id].fn(...calcs[id].inputs.map((i) => (store[i] || []))) }; } catch (e) { return { status: 'error', data: [] }; } }
+      return store[id] ? { status: 'ok', data: store[id] } : { status: 'loading', data: [] };
+    },
+    calc: (id, def) => { calcs[id] = def; },
+    draw: (name, fn) => { if (fn) draws[name] = fn; run(name); },
+    onData: (cb) => listeners.push(cb),
+    load: async (files) => {
+      await Promise.all(Object.entries(files).map(async ([id, url]) => { store[id] = await d3.csv(url); }));
+      ready = true;
+      listeners.forEach((cb) => cb());
+      Object.keys(draws).forEach(run);
+    }
+  };
+})();
+
+dash.calc('summary', {
+  inputs: ['nav'],
+  fn: (nav) => {
+    const live = nav.filter((r) => r.status === 'Live');
+    const dates = nav.map((r) => r.nav_date).filter(Boolean).sort();
+    return [{ live: live.length, total: nav.length, latest: dates.length ? dates[dates.length - 1] : '' }];
+  }
+});
+const state = { sel: null, cmp: new Set(), cmpOpen: false, range: 'all' };
+const fmtDate = (s) => { if (/^\d{4}-\d{2}$/.test(s || '')) { const m = d3.utcParse('%Y-%m')(s); return m ? d3.utcFormat('%b %Y')(m) : '—'; } const d = d3.utcParse('%Y-%m-%d')(s); return d ? d3.utcFormat('%-d %b %Y')(d) : '—'; };
+const num = (v) => (v === '' || v == null || isNaN(+v)) ? null : +v;
+const fmtNav = (v) => { const x = num(v); return x == null ? null : x.toFixed(2); };
+const fmtMin = (v) => { const x = num(v); return x == null ? null : 'USD ' + d3.format(',')(x); };
+const fmtPct = (v) => { const x = num(v); return x == null ? '—' : x.toFixed(2) + '%'; };
+const fmtRet = (v) => { const x = num(v); return x == null ? '—' : (x > 0 ? '+' : '') + x.toFixed(2) + '%'; };
+const retClass = (v) => { const x = num(v); return x == null ? 'na' : x < 0 ? 'neg' : 'pos'; };
+const rowsOf = (id) => { const d = dash.data(id); return d.status === 'ok' ? d.data : null; };
+const profileOf = (f) => { const r = rowsOf('profile'); return r ? r.find((x) => x.fund === f) || null : null; };
+const navOf = (f) => { const r = rowsOf('nav'); return r ? r.find((x) => x.fund === f) || null : null; };
+const allocOf = (f, kind) => { const r = rowsOf('alloc'); return r ? r.filter((x) => x.fund === f && x.kind === kind).sort((a, b) => num(a.rank) - num(b.rank)) : []; };
+const openCompare = (add) => {
+  state.cmpOpen = true;
+  if (add && state.cmp.size < 4) state.cmp.add(add);
+  dash.draw('compare');
+  setTimeout(() => { const c = document.getElementById('compare'); if (c) c.scrollIntoView({ block: 'start' }); }, 0);
+};
+document.querySelectorAll('#open-compare').forEach((b) => b.addEventListener('click', () => openCompare()));
+const syncRows = () => document.querySelectorAll('#nav-table tbody tr').forEach((tr) => tr.classList.toggle('sel', tr.getAttribute('data-fund-name') === state.sel));
+
+dash.draw('live', (el) => { const d = dash.data('summary'); el.textContent = d.status === 'ok' && d.data[0] ? d.data[0].live : '—'; });
+dash.draw('total', (el) => { const d = dash.data('summary'); el.textContent = d.status === 'ok' && d.data[0] ? d.data[0].total : '—'; });
+dash.draw('latest', (el) => { const d = dash.data('summary'); el.textContent = d.status === 'ok' && d.data[0] ? fmtDate(d.data[0].latest) : '—'; });
+dash.draw('fetched', (el) => { const d = dash.data('nav'); el.textContent = d.status === 'ok' && d.data[0] ? fmtDate(d.data[0].fetched_at) : '—'; });
+
+dash.draw('rows', (tbody) => {
+  const nav = rowsOf('nav');
+  const sel = d3.select(tbody);
+  sel.selectAll('tr').remove();
+  if (!nav) return;
+  const order = { Active: 0, Passive: 1, Feeder: 2 };
+  const rows = nav.slice().sort((a, b) => (order[a.category] ?? 9) - (order[b.category] ?? 9));
+  rows.forEach((r) => {
+    const p = profileOf(r.fund);
+    const tr = sel.append('tr').attr('data-fund-name', r.fund).attr('class', state.sel === r.fund ? 'sel' : null);
+    const f = tr.append('td').attr('class', 'fund');
+    f.append('button').attr('type', 'button').attr('class', 'fname').text(r.fund).on('click', () => {
+      state.sel = r.fund;
+      syncRows();
+      dash.draw('detail');
+      setTimeout(() => { const d = document.getElementById('detail'); if (d) d.scrollIntoView({ block: 'start' }); }, 0);
+    });
+    f.append('span').attr('class', 'amc').text(r.amc);
+    tr.append('td').attr('class', 'cat c-cat').attr('data-l', 'Type').text(r.category);
+    const s = fmtNav(r.nav_direct);
+    tr.append('td').attr('class', 'num c-nav' + (s ? '' : ' na')).attr('data-l', 'Direct NAV').text(s || '—');
+    const t = p && num(p.ter_pct) != null ? fmtPct(p.ter_pct) : '—';
+    tr.append('td').attr('class', 'num c-ter' + (t === '—' ? ' na' : '')).attr('data-l', 'Expense ratio').text(t);
+    const mi = p ? fmtMin(p.min_invest) : null;
+    tr.append('td').attr('class', 'num c-min' + (mi ? '' : ' na')).attr('data-l', 'Minimum investment').text(mi || '—');
+    tr.append('td').attr('class', 'num c-date' + (r.nav_date ? '' : ' na')).attr('data-l', 'NAV date').text(r.nav_date ? fmtDate(r.nav_date) : '—');
+    const st = tr.append('td').attr('class', 'c-st').attr('data-l', 'Status');
+    const cls = r.status === 'Live' ? 'ok' : r.status === 'Check source' ? 'warn' : 'none';
+    st.append('span').attr('class', 'pill ' + cls).text(r.status);
+    if (r.note) st.append('div').attr('class', 'note').text(r.note);
+  });
+});
+
+function benchName(p, n) {
+  if (n === 2) return p.bm2_name || '';
+  return String(p.benchmark || '').split(',')[0].replace(/ \((primary)\)/, '');
+}
+
+function benchPts(f, n) {
+  const p = profileOf(f);
+  if (!p || !p.returns_asof || !p.inception) return null;
+  const parse = d3.utcParse('%Y-%m-%d');
+  const pre = n === 2 ? 'bm2_' : 'bm_';
+  const end = parse(p.returns_asof), st = parse(p.inception);
+  const si = num(p[pre + 'si']);
+  if (si == null || !end || !st) return null;
+  const endL = 100 * (1 + si / 100);
+  const pts = [{ d: st, v: 100, k: true }, { d: end, v: endL, k: true }];
+  [['1m', 1], ['3m', 3], ['6m', 6], ['1y', 12]].forEach(([k, mo]) => {
+    const r = num(p[pre + k]);
+    if (r != null) { const d = d3.utcMonth.offset(end, -mo); if (d > st) pts.push({ d, v: endL / (1 + r / 100), k: true }); }
+  });
+  pts.sort((a, b) => a.d - b.d);
+  return { name: benchName(p, n), pts, end };
+}
+
+function dailyBench(f, s0) {
+  const bh = rowsOf('benchhist');
+  const p = profileOf(f);
+  if (!bh || !p || !s0) return null;
+  const parse = d3.utcParse('%Y-%m-%d');
+  const all = bh.filter((r) => r.fund === f + ' | benchmark' && num(r.level) != null && parse(r.date)).map((r) => ({ d: parse(r.date), v: +r.level })).sort((a, b) => a.d - b.d);
+  const lastD = d3.max(s0.pts, (q) => q.d), sd = s0.pts[0].d;
+  const inr = all.filter((q) => q.d <= lastD);
+  const i0 = d3.bisector((q) => q.d).right(inr, sd) - 1;
+  if (i0 < 0 || inr.length - i0 < 2) return null;
+  const seg = inr.slice(i0);
+  seg[0] = { d: sd, v: seg[0].v };
+  const base = seg[0].v;
+  return { name: benchName(p, 1), daily: true, pts: seg.map((q) => ({ d: q.d, v: q.v, k: false, r: q.v / base * 100 })), end: seg[seg.length - 1].d, color: dash.colors[1] };
+}
+
+function navChart(parent, funds) {
+  const nh = rowsOf('navhist');
+  const box = parent.append('div').attr('class', 'rchart');
+  const head = box.append('div').attr('class', 'rhead');
+  head.append('h4').text('NAV growth, rebased to 100');
+  const rb = head.append('div').attr('class', 'rng');
+  [['1m', '1M'], ['3m', '3M'], ['6m', '6M'], ['all', 'All']].forEach(([k, n]) => {
+    rb.append('button').attr('type', 'button').attr('aria-pressed', state.range === k ? 'true' : 'false').text(n).on('click', () => {
+      state.range = k; dash.draw('detail'); dash.draw('compare');
+    });
+  });
+  if (!nh) return;
+  const parse = d3.utcParse('%Y-%m-%d');
+  const series = funds.map((f, i) => ({
+    name: f, color: dash.colors[i % dash.colors.length],
+    pts: nh.filter((r) => r.fund === f && num(r.nav) != null && parse(r.date)).map((r) => ({ d: parse(r.date), v: +r.nav })).sort((a, b) => a.d - b.d)
+  }));
+  const ends = series.filter((s) => s.pts.length).map((s) => s.pts[s.pts.length - 1].d);
+  if (!ends.length) { box.remove(); return; }
+  const last = d3.max(ends);
+  const months = { '1m': 1, '3m': 3, '6m': 6 }[state.range];
+  const cut = months ? d3.utcMonth.offset(last, -months) : null;
+  series.forEach((s) => {
+    if (cut) { const k = d3.bisector((p) => p.d).right(s.pts, cut) - 1; s.pts = s.pts.slice(Math.max(0, k)); }
+  });
+  const ok = series.filter((s) => s.pts.length >= 2);
+  if (!ok.length) { box.remove(); return; }
+  const start = d3.max(ok, (s) => s.pts[0].d);
+  ok.forEach((s) => { s.pts = s.pts.filter((p) => p.d >= start); const b = s.pts[0].v; s.pts.forEach((p) => { p.r = p.v / b * 100; }); });
+  const drawn = ok.filter((s) => s.pts.length >= 2);
+  if (!drawn.length) return;
+  const benches = [];
+  if (funds.length === 1) {
+    const dailyB = dailyBench(funds[0], drawn[0]);
+    if (dailyB) benches.push(dailyB);
+    else [1, 2].forEach((n) => {
+      const b = benchPts(funds[0], n);
+      if (!b) return;
+      const sd = drawn[0].pts[0].d;
+      if (sd < b.pts[0].d || sd >= b.end) return;
+      const at = (x) => { const bi = d3.bisector((p) => p.d).right(b.pts, x) - 1; const a = b.pts[bi], c = b.pts[Math.min(bi + 1, b.pts.length - 1)]; if (a === c) return a.v; return a.v + (c.v - a.v) * ((x - a.d) / (c.d - a.d)); };
+      const base = at(sd);
+      const inner = b.pts.filter((p) => p.d > sd);
+      if (inner.length < 2) return;
+      const pts = [{ d: sd, v: base, k: false, r: 100 }].concat(inner.map((p) => ({ d: p.d, v: p.v, k: true, r: p.v / base * 100 })));
+      benches.push({ name: b.name, pts, end: b.end, color: dash.colors[(n % dash.colors.length)] });
+    });
+  }
+  const lg = box.append('div').attr('class', 'rleg');
+  drawn.forEach((s) => { const e = s.pts[s.pts.length - 1].r - 100; const sp = lg.append('span'); sp.append('i').style('background', s.color); sp.append('b').text(s.name + ' ' + (e > 0 ? '+' : '') + e.toFixed(2) + '%'); });
+  benches.forEach((s) => { const e = s.pts[s.pts.length - 1].r - 100; const sp = lg.append('span'); sp.append('i').style('background', 'transparent').style('border-top', '2px dashed ' + s.color).style('height', '0'); sp.append('b').text(s.name + ' (benchmark) ' + (e > 0 ? '+' : '') + e.toFixed(2) + '% to ' + fmtDate(s.end.toISOString().slice(0, 10))); });
+  if (benches.length) box.append('p').attr('class', 'cap').style('margin-top', '4px').text(benches.every((s) => s.daily) ? 'The dashed line is the benchmark index, daily, in US dollars with dividends reinvested.' : 'Benchmark dots are the published return dates. The dashed line joins them with straight lines, so it is not a daily series.');
+  const W = Math.max(280, Math.min(760, parent.node().clientWidth || 760)), H = 250, m = { t: 12, r: 12, b: 26, l: 42 };
+  const xs = d3.scaleUtc().domain([start, d3.max(drawn, (s) => s.pts[s.pts.length - 1].d)]).range([m.l, W - m.r]);
+  const allv = drawn.concat(benches).flatMap((s) => s.pts.map((p) => p.r));
+  const y = d3.scaleLinear().domain([d3.min(allv), d3.max(allv)]).nice().range([H - m.b, m.t]);
+  const svg = box.append('svg').attr('width', W).attr('height', H).attr('role', 'img')
+    .attr('aria-label', 'NAV growth rebased to 100 from ' + fmtDate(start.toISOString().slice(0, 10)) + ': ' + drawn.map((s) => s.name + ' ends at ' + s.pts[s.pts.length - 1].r.toFixed(1)).join(', '));
+  y.ticks(5).forEach((v) => {
+    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(v)).attr('y2', y(v)).style('stroke', v === 100 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)');
+    svg.append('text').attr('x', m.l - 6).attr('y', y(v) + 4).attr('text-anchor', 'end').style('font-size', '11px').style('fill', 'var(--cds-text-secondary)').text(v);
+  });
+  xs.ticks(Math.max(2, Math.floor(W / 110))).forEach((v) => {
+    svg.append('text').attr('x', xs(v)).attr('y', H - 8).attr('text-anchor', 'middle').style('font-size', '11px').style('fill', 'var(--cds-text-secondary)').text(d3.utcFormat('%b %-d')(v));
+  });
+  const line = d3.line().x((p) => xs(p.d)).y((p) => y(p.r));
+  drawn.forEach((s) => svg.append('path').attr('d', line(s.pts)).style('fill', 'none').style('stroke', s.color).style('stroke-width', 1.6).style('stroke-linejoin', 'round'));
+  benches.forEach((s) => {
+    svg.append('path').attr('d', line(s.pts)).style('fill', 'none').style('stroke', s.color).style('stroke-width', 1.5).style('stroke-dasharray', '5 4');
+    s.pts.filter((p) => p.k).forEach((p) => svg.append('circle').attr('cx', xs(p.d)).attr('cy', y(p.r)).attr('r', 3).style('fill', s.color));
+  });
+  const hl = svg.append('line').attr('y1', m.t).attr('y2', H - m.b).style('stroke', 'var(--cds-chart-axis)').style('display', 'none');
+  const dots = drawn.map((s) => svg.append('circle').attr('r', 3.5).style('fill', s.color).style('display', 'none'));
+  const tip = box.append('div').attr('class', 'rtip');
+  const bis = d3.bisector((p) => p.d).center;
+  svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.t - m.b).style('fill', 'transparent')
+    .on('mousemove touchmove', (ev) => {
+      const pt = d3.pointer(ev.touches ? ev.touches[0] : ev);
+      const xd = xs.invert(pt[0]);
+      const rows = drawn.map((s) => { const p = s.pts[bis(s.pts, xd)]; return { s, p }; });
+      const px = xs(rows[0].p.d);
+      hl.style('display', null).attr('x1', px).attr('x2', px);
+      rows.forEach((r, i) => dots[i].style('display', null).attr('cx', xs(r.p.d)).attr('cy', y(r.p.r)));
+      tip.style('display', 'block').text('');
+      tip.append('div').text(fmtDate(rows[0].p.d.toISOString().slice(0, 10)));
+      rows.forEach((r) => tip.append('div').text((drawn.length > 1 ? r.s.name + ': ' : 'NAV ') + r.p.v.toFixed(2) + ' (' + (r.p.r - 100 >= 0 ? '+' : '') + (r.p.r - 100).toFixed(2) + '%)'));
+      tip.style('left', Math.min(px + 12, W - 190) + 'px').style('top', '30px');
+    })
+    .on('mouseleave', () => { tip.style('display', 'none'); hl.style('display', 'none'); dots.forEach((d) => d.style('display', 'none')); });
+}
+
+function barCard(parent, title, rows) {
+  const card = parent.append('div').attr('class', 'card');
+  card.append('h4').text(title);
+  if (!rows.length) { card.append('p').attr('class', 'cap').text('Not published on the fund house website.'); return; }
+  const max = d3.max(rows, (r) => num(r.weight)) || 1;
+  rows.forEach((r) => {
+    const row = card.append('div').attr('class', 'brow');
+    row.append('span').attr('class', 'bl').text(r.name);
+    row.append('span').attr('class', 'bt').append('span').attr('class', 'bf')
+      .style('width', (num(r.weight) / max * 100) + '%').style('background', dash.colors[0]);
+    row.append('span').attr('class', 'bv').text(fmtPct(r.weight));
+  });
+  const first = rows[0];
+  card.append('p').attr('class', 'cap').text((first.basis || '') + (first.asof ? ' · as of ' + fmtDate(first.asof) : ''));
+}
+
+dash.draw('detail', (el) => {
+  const root = d3.select(el);
+  root.selectAll('*').remove();
+  if (!state.sel || !rowsOf('nav')) return;
+  const n = navOf(state.sel);
+  const p = profileOf(state.sel);
+  if (!n) return;
+  const head = root.append('div').attr('class', 'phead');
+  const hl = head.append('div');
+  hl.append('h2').text(n.fund);
+  hl.append('div').attr('class', 'psub').text(n.amc + ' · ' + n.category + ' fund');
+  const acts = head.append('div').attr('class', 'acts');
+  acts.append('button').attr('type', 'button').attr('class', 'btn primary').text(state.cmpOpen && state.cmp.has(n.fund) ? 'In comparison' : 'Compare with other funds').on('click', () => openCompare(n.fund));
+  acts.append('button').attr('type', 'button').attr('class', 'btn').text('Close').on('click', () => {
+    state.sel = null; syncRows(); dash.draw('detail');
+  });
+  const dl = root.append('dl');
+  const item = (k, v, sub) => {
+    const d = dl.append('div');
+    d.append('dt').text(k);
+    const dd = d.append('dd').text(v || '—');
+    if (sub) dd.append('div').attr('class', 'cap').text(sub);
+  };
+  const nav = fmtNav(n.nav_direct);
+  item('Direct NAV (USD)', nav ? nav : 'Not published', n.nav_date ? 'As of ' + fmtDate(n.nav_date) : '');
+  item('Expense ratio', p && num(p.ter_pct) != null ? fmtPct(p.ter_pct) : 'Not published', p ? p.ter_note : '');
+  item('Minimum investment', p && fmtMin(p.min_invest) ? fmtMin(p.min_invest) : 'Not published', p ? p.min_note : '');
+  item('Exit load', p ? p.exit_load : '');
+  item('Benchmark', p ? p.benchmark : '');
+  item('Fund size', p && num(p.aum_usd_mn) != null ? 'USD ' + num(p.aum_usd_mn).toFixed(2) + ' mn' : 'Not published');
+  item('Fund manager', p ? p.manager : '');
+  if (p) {
+    const rc = root.append('div').attr('class', 'rets');
+    navChart(rc, [state.sel]);
+    rc.append('h4').style('margin-top', '18px').text('Returns (Direct plan, USD)');
+    const hasRet = ['ret_1m', 'ret_3m', 'ret_6m', 'ret_1y', 'ret_si'].some((k) => num(p[k]) != null);
+    if (hasRet) {
+      const tb = rc.append('div').style('overflow-x', 'auto').append('table');
+      const hr = tb.append('thead').append('tr');
+      ['1 month', '3 months', '6 months', '1 year', 'Since inception'].forEach((h) => hr.append('th').attr('class', 'num').text(h));
+      const br = tb.append('tbody').append('tr');
+      ['ret_1m', 'ret_3m', 'ret_6m', 'ret_1y', 'ret_si'].forEach((k) => br.append('td').attr('class', 'num ' + retClass(p[k])).text(fmtRet(p[k])));
+    }
+    const bk = ['bm_1m', 'bm_3m', 'bm_6m', 'bm_1y', 'bm_si'];
+    const bk2 = ['bm2_1m', 'bm2_3m', 'bm2_6m', 'bm2_1y', 'bm2_si'];
+    const two = bk2.some((k) => num(p[k]) != null);
+    if (bk.some((k) => num(p[k]) != null)) {
+      rc.append('h4').style('margin-top', '12px').text(two ? 'Benchmarks, same dates' : 'Benchmark, same dates: ' + (p.benchmark || ''));
+      const t2 = rc.append('div').style('overflow-x', 'auto').append('table');
+      const h2 = t2.append('thead').append('tr');
+      if (two) h2.append('th').text('Benchmark');
+      ['1 month', '3 months', '6 months', '1 year', 'Since inception'].forEach((h) => h2.append('th').attr('class', 'num').text(h));
+      const tb2 = t2.append('tbody');
+      const addRow = (label, keys) => {
+        const b2 = tb2.append('tr');
+        if (two) b2.append('td').text(label);
+        keys.forEach((k) => b2.append('td').attr('class', 'num ' + retClass(p[k])).text(fmtRet(p[k])));
+      };
+      addRow(benchName(p, 1) + (two ? ' (primary)' : ''), bk);
+      if (two) addRow(benchName(p, 2) + ' (secondary)', bk2);
+    }
+    if (p.bm_note) rc.append('p').attr('class', 'cap').style('margin-top', '6px').text('Benchmark: ' + p.bm_note + (p.inception ? ' Fund start date: ' + fmtDate(p.inception) + '.' : ''));
+    const cap = (hasRet && p.returns_asof ? 'As of ' + fmtDate(p.returns_asof) + '. ' : '') + (p.returns_note || '');
+    if (cap) rc.append('p').attr('class', 'cap').style('margin-top', '6px').text(cap);
+  }
+  const cards = root.append('div').attr('class', 'cards');
+  if (!allocOf(state.sel, 'holding').length && allocOf(state.sel, 'index').length) barCard(cards, 'Top holdings (underlying ETF index)', allocOf(state.sel, 'index'));
+  else {
+    barCard(cards, 'Top holdings of the fund', allocOf(state.sel, 'holding'));
+    if (allocOf(state.sel, 'index').length) barCard(cards, 'Largest stocks in the index tracked', allocOf(state.sel, 'index'));
+  }
+  barCard(cards, 'Geography', allocOf(state.sel, 'geography'));
+  barCard(cards, 'Sectors', allocOf(state.sel, 'sector'));
+  if (p && /^https:\/\//.test(p.source_url || '')) {
+    root.append('p').attr('class', 'cap').text('Source: ').append('a').attr('href', p.source_url).attr('target', '_blank').attr('rel', 'noopener').text('fund house page');
+  }
+});
+
+dash.draw('compare', (el) => {
+  const root = d3.select(el);
+  root.selectAll('*').remove();
+  if (!rowsOf('nav') || !state.cmpOpen) return;
+  const funds = Array.from(state.cmp);
+  const head = root.append('div').attr('class', 'phead');
+  head.append('h2').text('Compare funds');
+  head.append('button').attr('type', 'button').attr('class', 'btn').text('Close').on('click', () => {
+    state.cmp.clear(); state.cmpOpen = false;
+    dash.draw('compare'); dash.draw('detail');
+  });
+  root.append('p').attr('class', 'cap').text('Pick two to four funds.');
+  const chips = root.append('div').attr('class', 'chips');
+  rowsOf('nav').forEach((r) => {
+    const on = state.cmp.has(r.fund);
+    chips.append('button').attr('type', 'button').attr('class', 'chip').attr('aria-pressed', on ? 'true' : 'false')
+      .property('disabled', !on && state.cmp.size >= 4).text(r.fund).on('click', () => {
+        if (on) state.cmp.delete(r.fund); else state.cmp.add(r.fund);
+        dash.draw('compare'); dash.draw('detail');
+      });
+  });
+  if (funds.length < 2) {
+    root.append('p').attr('class', 'cap').text('Pick at least one more fund to see the comparison.');
+    return;
+  }
+  const top = (f, kind) => { const a = allocOf(f, kind)[0]; return a ? a.name + ' ' + fmtPct(a.weight) : '—'; };
+  const ret = (k) => (f) => { const p = profileOf(f); return p ? { t: fmtRet(p[k]), c: retClass(p[k]) } : { t: '—', c: 'na' }; };
+  const txt = (g) => (f) => { const p = profileOf(f); const v = p ? g(p) : ''; return { t: v || '—', c: v ? '' : 'na' }; };
+  const metrics = [
+    ['Direct NAV (USD)', (f) => { const n = navOf(f); const v = n ? fmtNav(n.nav_direct) : null; return { t: v || 'Not published', c: v ? '' : 'na' }; }],
+    ['NAV date', (f) => { const n = navOf(f); return { t: n && n.nav_date ? fmtDate(n.nav_date) : '—', c: '' }; }],
+    ['Expense ratio', (f) => { const p = profileOf(f); const v = p && num(p.ter_pct) != null ? fmtPct(p.ter_pct) + (p.ter_note ? ' (' + p.ter_note + ')' : '') : '—'; return { t: v, c: v === '—' ? 'na' : '' }; }],
+    ['Minimum investment', (f) => { const p = profileOf(f); const v = p ? fmtMin(p.min_invest) : null; return { t: v || 'Not published', c: v ? '' : 'na' }; }],
+    ['Exit load', txt((p) => p.exit_load)],
+    ['Benchmark', txt((p) => p.benchmark)],
+    ['Fund size', (f) => { const p = profileOf(f); const v = p && num(p.aum_usd_mn) != null ? 'USD ' + num(p.aum_usd_mn).toFixed(2) + ' mn' : '—'; return { t: v, c: v === '—' ? 'na' : '' }; }],
+    ['Return, 1 month', ret('ret_1m')],
+    ['Return, 3 months', ret('ret_3m')],
+    ['Return, 6 months', ret('ret_6m')],
+    ['Return, since inception', ret('ret_si')],
+    ['Benchmark, 1 month', ret('bm_1m')],
+    ['Benchmark, 3 months', ret('bm_3m')],
+    ['Benchmark, 6 months', ret('bm_6m')],
+    ['Benchmark, since inception', ret('bm_si')],
+    ['Fund start date', (f) => { const p = profileOf(f); return { t: p && p.inception ? fmtDate(p.inception) : '—', c: '' }; }],
+    ['Returns as of', (f) => { const p = profileOf(f); return { t: p && p.returns_asof ? fmtDate(p.returns_asof) : '—', c: '' }; }],
+    ['Largest holding', (f) => { let v = top(f, 'holding'); if (v === '—') { const w = top(f, 'index'); if (w !== '—') v = w + ' (index)'; } return { t: v, c: v === '—' ? 'na' : '' }; }],
+    ['Largest country or region', (f) => { const v = top(f, 'geography'); return { t: v, c: v === '—' ? 'na' : '' }; }],
+    ['Largest sector', (f) => { const v = top(f, 'sector'); return { t: v, c: v === '—' ? 'na' : '' }; }],
+    ['Fund manager', txt((p) => p.manager)]
+  ];
+  navChart(root.append('div'), funds);
+  const wrap = root.append('div').style('overflow-x', 'auto');
+  const tb = wrap.append('table').attr('class', 'cmp');
+  const hr = tb.append('thead').append('tr');
+  hr.append('th').text('');
+  funds.forEach((f) => hr.append('th').style('color', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-body)').style('text-transform', 'none').style('letter-spacing', '0').text(f));
+  const body = tb.append('tbody');
+  metrics.forEach(([label, fn]) => {
+    const tr = body.append('tr');
+    tr.append('th').attr('class', 'rowh').text(label);
+    funds.forEach((f) => { const v = fn(f); tr.append('td').attr('class', v.c).text(v.t); });
+  });
+  root.append('p').attr('class', 'cap').text('Returns cover different periods and end on different dates for each fund, and young funds have short track records, so read them with care. For HDFC and PPFAS funds the holdings, countries and sectors are index weights of what the fund tracks.');
+});
+
+dash.load({ nav: 'data/nav_latest.csv', navhist: 'data/navhist.csv', profile: 'data/profile.csv', alloc: 'data/alloc.csv', benchhist: 'data/benchhist.csv' })
+  .catch((e) => { document.querySelector('.lede span:last-child').textContent = 'Could not load the data files.'; console.error(e); });
+</script>
+</body>
+</html>

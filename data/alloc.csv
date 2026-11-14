@@ -1,0 +1,114 @@
+fund,kind,rank,name,weight,asof,basis
+DSP Global Equity Fund,holding,1,Adyen NV,5.18,2026-10-30,Fund portfolio
+DSP Global Equity Fund,holding,2,Amazon.com,4.65,2026-10-30,Fund portfolio
+DSP Global Equity Fund,holding,3,Constellation Software,4.35,2026-10-30,Fund portfolio
+DSP Global Equity Fund,holding,4,Meta Platforms,3.9,2026-10-30,Fund portfolio
+DSP Global Equity Fund,holding,5,TSMC,3.81,2026-10-30,Fund portfolio
+DSP Global Equity Fund,geography,1,United States,26.49,2026-10-30,Fund portfolio
+DSP Global Equity Fund,geography,2,China,11.68,2026-10-30,Fund portfolio
+DSP Global Equity Fund,geography,3,Canada,8.73,2026-10-30,Fund portfolio
+DSP Global Equity Fund,geography,4,Netherlands,5.68,2026-10-30,Fund portfolio
+DSP Global Equity Fund,geography,5,United Kingdom,4.29,2026-10-30,Fund portfolio
+DSP Global Equity Fund,sector,1,Financial Services,18.77,2026-10-30,Fund portfolio
+DSP Global Equity Fund,sector,2,Media & Entertainment,16.97,2026-10-30,Fund portfolio
+DSP Global Equity Fund,sector,3,Consumer Durables & Apparel,7.78,2026-10-30,Fund portfolio
+DSP Global Equity Fund,sector,4,Consumer Discretionary,5.98,2026-10-30,Fund portfolio
+DSP Global Equity Fund,sector,5,Capital Goods,5.16,2026-10-30,Fund portfolio
+Marcellus Global Equity Fund,holding,1,Safran,5.11,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,holding,2,Microsoft,3.61,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,holding,3,General Electric,2.87,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,holding,4,ServiceNow,2.86,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,holding,5,Apple,2.79,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,geography,1,North America,66.2,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,geography,2,Europe,12.87,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,geography,3,Asia,2.16,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,sector,1,Aerospace & Defense,13.91,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,sector,2,Software,10.38,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,sector,3,Semiconductor Equipment,10.08,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,sector,4,Tactical ETFs,9.8,2026-09-30,Fund portfolio
+Marcellus Global Equity Fund,sector,5,Machinery,7.61,2026-09-30,Fund portfolio
+PPFAS Nasdaq 100 Fund,index,1,Nvidia,7.6,2026-07-31,"Nasdaq 100 index weights, not the fund's own holdings"
+PPFAS Nasdaq 100 Fund,index,2,Apple,6.67,2026-07-31,"Nasdaq 100 index weights, not the fund's own holdings"
+PPFAS Nasdaq 100 Fund,index,3,Micron Technology,5.64,2026-07-31,"Nasdaq 100 index weights, not the fund's own holdings"
+PPFAS Nasdaq 100 Fund,index,4,Microsoft,4.35,2026-07-31,"Nasdaq 100 index weights, not the fund's own holdings"
+PPFAS Nasdaq 100 Fund,index,5,AMD,4.11,2026-07-31,"Nasdaq 100 index weights, not the fund's own holdings"
+Edelweiss Greater China Fund,holding,1,TSMC,10.0,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,holding,2,Tencent,7.2,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,holding,3,Alibaba,5.2,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,holding,4,Delta Electronics,3.1,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,holding,5,ASPEED Technology,2.9,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,geography,1,China A-shares,44.6,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,geography,2,Hong Kong,29.2,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,geography,3,"Other China listings (ADR, P Chip, Red Chip, B and H shares)",15.4,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,geography,4,Taiwan,4.9,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,sector,1,Information Technology,50.5,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,sector,2,Financials,14.5,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,sector,3,Consumer Discretionary,11.8,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,sector,4,Communication Services,10.4,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss Greater China Fund,sector,5,Industrials,6.1,2026-09-30,"Master fund, JPMorgan Greater China Fund"
+Edelweiss US Technology Fund,holding,1,Palo Alto Networks,4.25,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,holding,2,NVIDIA,3.83,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,holding,3,Broadcom,3.65,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,holding,4,Salesforce,3.37,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,holding,5,CrowdStrike,3.34,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,sector,1,Technology,76.2,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,sector,2,Consumer Discretionary,8.5,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,sector,3,Telecommunications,4.2,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,sector,4,Industrials,3.5,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+Edelweiss US Technology Fund,sector,5,Financials,3.2,2026-08-31,"Master fund, JPMorgan US Technology Fund"
+PPFAS Nasdaq 100 Fund,holding,1,Invesco NASDAQ-100 Swap UCITS ETF Acc,99.96,2026-10-31,"Fund portfolio, as listed on the October 2026 factsheet"
+PPFAS Nasdaq 100 Fund,holding,2,Cash and money market instruments,0.04,2026-10-31,"Fund portfolio, as listed on the October 2026 factsheet"
+PPFAS S&P 500 Fund,holding,1,Invesco S&P 500 UCITS ETF Acc,99.96,2026-10-31,"Fund portfolio, as listed on the October 2026 factsheet"
+PPFAS S&P 500 Fund,holding,2,Cash and money market instruments,0.04,2026-10-31,"Fund portfolio, as listed on the October 2026 factsheet"
+HDFC World Index Fund,index,1,Nvidia,5.8,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,index,2,Apple,5.4,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,index,3,Microsoft,4.0,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,index,4,Amazon,2.7,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,index,5,Alphabet A,2.2,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,geography,1,United States,72.9,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,geography,2,Japan,5.9,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,geography,3,United Kingdom,3.4,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,geography,4,Canada,3.3,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,geography,5,France,2.2,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC Emerging Markets Fund,index,1,TSMC,15.6,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,index,2,Samsung Electronics,7.6,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,index,3,SK Hynix,5.9,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,index,4,Tencent,2.7,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,index,5,Alibaba,1.9,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,geography,1,Taiwan,28.9,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,geography,2,South Korea,21.4,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,geography,3,China,19.8,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,geography,4,India,10.7,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,geography,5,Brazil,4.1,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+PPFAS Nasdaq 100 Fund,sector,1,Information Technology,59.9,2026-09-30,"Nasdaq 100 index sector weights from the factsheet, not the fund's own split"
+PPFAS Nasdaq 100 Fund,sector,2,Communication Services,14.9,2026-09-30,"Nasdaq 100 index sector weights from the factsheet, not the fund's own split"
+PPFAS Nasdaq 100 Fund,sector,3,Consumer Discretionary,10.0,2026-09-30,"Nasdaq 100 index sector weights from the factsheet, not the fund's own split"
+PPFAS Nasdaq 100 Fund,sector,4,Consumer Staples,5.5,2026-09-30,"Nasdaq 100 index sector weights from the factsheet, not the fund's own split"
+PPFAS Nasdaq 100 Fund,sector,5,Healthcare,3.8,2026-09-30,"Nasdaq 100 index sector weights from the factsheet, not the fund's own split"
+PPFAS S&P 500 Fund,sector,1,Information Technology,37.9,2026-09-30,S&P 500 index sector weights from the factsheet. Only the two largest sectors could be read reliably
+PPFAS S&P 500 Fund,sector,2,Financials,12.3,2026-09-30,S&P 500 index sector weights from the factsheet. Only the two largest sectors could be read reliably
+HDFC World Index Fund,sector,1,Information Technology,31.8,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,2,Financials,15.7,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,3,Industrials,10.8,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,4,Health Care,9.2,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,5,Consumer Discretionary,8.4,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,6,Communication Services,8.3,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,7,Consumer Staples,4.8,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,8,Energy,4.0,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,9,Materials,3.2,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,10,Utilities,2.3,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC World Index Fund,sector,11,Real Estate,1.5,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI World), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,1,Information Technology,43.8,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,2,Financials,19.4,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,3,Consumer Discretionary,7.4,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,4,Industrials,6.3,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,5,Communication Services,5.9,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,6,Materials,5.8,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,7,Energy,3.4,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,8,Health Care,2.7,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,9,Consumer Staples,2.6,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,10,Utilities,1.9,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+HDFC Emerging Markets Fund,sector,11,Real Estate,1.0,2026-09-30,"Index weights of the underlying ETF (UBS Core MSCI EM), not the fund's own holdings"
+PPFAS Nasdaq 100 Fund,geography,1,United States,100,2026-10-30,"The fund invests in a US index fund, so all exposure is to the United States"
+PPFAS S&P 500 Fund,geography,1,United States,100,2026-10-30,"The fund invests in a US index fund, so all exposure is to the United States"
+Edelweiss US Technology Fund,geography,1,United States,100,2026-08-31,"The fund invests in a US technology fund, so all exposure is to the United States"
