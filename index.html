@@ -117,6 +117,13 @@ body { margin: 0; background: #fff; }
 .gt .cmp th.rowh { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--color-fg-muted); width: 150px; font-size: var(--cds-font-size-body); }
 .gt .cmp { min-width: 560px; }
 .gt .cmp td { min-width: 150px; }
+.gt .rwrap { overflow-x: auto; border-top: 2px solid var(--navy); border-bottom: 1px solid var(--hair); }
+.gt #ret-table { min-width: 640px; }
+.gt #ret-table td, .gt #ret-table th { padding: 11px 12px; }
+.gt #ret-table td.rfund { white-space: normal; min-width: 190px; }
+.gt #ret-table .sub { display: block; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin-top: 2px; }
+.gt .rglance { display: flex; flex-direction: column; gap: 8px; }
+.gt .rglance:empty { display: none; }
 
 @media (max-width: 720px) {
   .gt .in { padding: 0 16px; }
@@ -163,6 +170,7 @@ body { margin: 0; background: #fff; }
     <p class="lede"><span class="dot" aria-hidden="true"></span><span><b data-draw="live">—</b> of <b data-draw="total">—</b> funds have a published NAV, the newest dated <b data-draw="latest">—</b>.</span></p>
   </div></header>
   <div class="in main">
+  <div class="rglance" data-draw="returns"></div>
   <div class="bar">
     <p class="hint">Click a fund name to see its holdings, returns, costs and manager.</p>
     <button type="button" class="btn primary" id="open-compare">Compare funds</button>
@@ -243,6 +251,41 @@ dash.draw('live', (el) => { const d = dash.data('summary'); el.textContent = d.s
 dash.draw('total', (el) => { const d = dash.data('summary'); el.textContent = d.status === 'ok' && d.data[0] ? d.data[0].total : '—'; });
 dash.draw('latest', (el) => { const d = dash.data('summary'); el.textContent = d.status === 'ok' && d.data[0] ? fmtDate(d.data[0].latest) : '—'; });
 dash.draw('fetched', (el) => { const d = dash.data('nav'); el.textContent = d.status === 'ok' && d.data[0] ? fmtDate(d.data[0].fetched_at) : '—'; });
+
+dash.draw('returns', (el) => {
+  const root = d3.select(el);
+  root.selectAll('*').remove();
+  const prof = rowsOf('profile');
+  if (!prof) return;
+  const nav = rowsOf('nav') || [];
+  const nrow = (f) => nav.find((x) => x.fund === f) || null;
+  const order = { Active: 0, Passive: 1, Feeder: 2 };
+  const rows = prof.slice().sort((a, b) => ((nrow(a.fund) ? order[nrow(a.fund).category] : 9) ?? 9) - ((nrow(b.fund) ? order[nrow(b.fund).category] : 9) ?? 9));
+  root.append('h4').style('margin', '0').text('Returns at a glance, Direct plan in USD');
+  const wrap = root.append('div').attr('class', 'rwrap');
+  const tb = wrap.append('table').attr('id', 'ret-table');
+  const hr = tb.append('thead').append('tr');
+  hr.append('th').text('Fund');
+  ['1 month', '3 months', '6 months', '1 year', 'Since inception'].forEach((h) => hr.append('th').attr('class', 'num').text(h));
+  hr.append('th').attr('class', 'num').text('As of');
+  const body = tb.append('tbody');
+  rows.forEach((p) => {
+    const n = nrow(p.fund);
+    const tr = body.append('tr');
+    const td = tr.append('td').attr('class', 'rfund');
+    td.append('button').attr('type', 'button').attr('class', 'fname').text(p.fund).on('click', () => {
+      state.sel = p.fund;
+      syncRows();
+      dash.draw('detail');
+      setTimeout(() => { const d = document.getElementById('detail'); if (d) d.scrollIntoView({ block: 'start' }); }, 0);
+    });
+    td.append('span').attr('class', 'sub').text(n ? n.category : '');
+    const has = ['ret_1m', 'ret_3m', 'ret_6m', 'ret_1y', 'ret_si'].some((k) => num(p[k]) != null);
+    ['ret_1m', 'ret_3m', 'ret_6m', 'ret_1y', 'ret_si'].forEach((k) => tr.append('td').attr('class', 'num ' + retClass(p[k])).text(fmtRet(p[k])));
+    tr.append('td').attr('class', 'num ' + (has && p.returns_asof ? '' : 'na')).text(has && p.returns_asof ? fmtDate(p.returns_asof) : (n && n.status === 'Not launched' ? 'Not launched' : '—'));
+  });
+  root.append('p').attr('class', 'cap').text('Returns are not annualised. Each fund is measured to the date in the last column, and funds that launched recently have no figure for longer periods, so compare with care. Click a fund name for its benchmark, chart and details.');
+});
 
 dash.draw('rows', (tbody) => {
   const nav = rowsOf('nav');
